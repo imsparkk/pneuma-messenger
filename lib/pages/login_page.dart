@@ -13,3 +13,13 @@ class _MyWidgetState extends State<MyWidget> {
     return Scaffold();
   }
 }
+
+
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
