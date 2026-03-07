@@ -170,7 +170,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
               ElevatedButton(
                 child: Text(
-                  "Sign in",
+                  "Sign up",
                   style: TextStyle(
                   backgroundColor: Colors.white,
                   color: Colors.black
