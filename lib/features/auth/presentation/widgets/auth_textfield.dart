@@ -6,18 +6,25 @@ class LoginTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-        ),
         filled: true,
-        fillColor: Colors.white,
-        prefixIcon: Icon(Icons.person, color: Colors.black, size: 30),
+        fillColor: Colors.white.withAlpha(25),
+        prefixIcon: Icon(Icons.person, color: Colors.white, size: 30),
         prefixIconConstraints: BoxConstraints(minWidth: 60),
         hintText: "Login",
+        hintStyle: TextStyle(
+          color: Colors.white
+        ),
+
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          borderSide: BorderSide(color: Colors.white, width: 1)
+        ),
+
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(30)),
-          borderSide: BorderSide(style: BorderStyle.none),
+          borderSide: BorderSide(color: Colors.white, width: 1)
         ),
 
         errorBorder: OutlineInputBorder(
@@ -35,12 +42,13 @@ class LoginTextField extends StatelessWidget {
 
 TextField RegisterTextField(bool passwordVisible, VoidCallback onPressed) {
     return TextField(
-                  maxLength: 25,
+                style: TextStyle(color: Colors.white),
+                maxLength: 25,
                 obscureText: passwordVisible,
                 decoration: InputDecoration(
                   counterText: "",
                   filled: true,
-                  fillColor: Colors.white.withOpacity(0.1),
+                  fillColor: Colors.white.withAlpha(25),
                   prefixIcon: Icon(
                     Icons.lock, 
                     color: Colors.white,
@@ -61,14 +69,23 @@ TextField RegisterTextField(bool passwordVisible, VoidCallback onPressed) {
 
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
-                      borderSide: BorderSide(color: Colors.white, width: 1.5)
+                      borderSide: BorderSide(color: Colors.white, width: 1)
                   ),
 
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30)),
                     borderSide: BorderSide(color: Colors.white, width: 1)
-                  )
+                  ),
 
-                ),
-                );
-  }
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: Colors.red,
+                      style: BorderStyle.solid,
+                      ),
+                  ),
+
+    ),
+  );
+}

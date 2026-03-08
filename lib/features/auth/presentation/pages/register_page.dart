@@ -28,7 +28,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
           SizedBox(height: 15),
 
-          Center(child: SizedBox(width: 400, child: LoginTextField())),
+          Center(
+            child: SizedBox(
+              width: 400, 
+              child: LoginTextField()
+              )
+          ),
 
           SizedBox(height: 15),
 
@@ -73,7 +78,9 @@ class _RegisterPageState extends State<RegisterPage> {
               "Есть учетная запись? Авторизуйтесь!",
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, '/login_page');
+            },
           ),
         ],
       ),
