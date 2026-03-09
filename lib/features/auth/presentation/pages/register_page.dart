@@ -11,6 +11,8 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   bool passwordVisible = false;
 
+  
+
   @override
   void initState() {
     super.initState();

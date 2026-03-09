@@ -1,6 +1,7 @@
 android/key.properties
 *.jks
 *.keystore
+flutter-plugins-dependencies
 
 # Android local config
 android/local.properties
