@@ -40,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Center(
             child: SizedBox(
               width: 400,
-              child: RegisterTextField(passwordVisible, () {
+              child: PasswordTextField(passwordVisible, () {
                 setState(() {
                   passwordVisible = !passwordVisible;
                 });
@@ -53,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Center(
             child: SizedBox(
               width: 400,
-              child: RegisterTextField(passwordVisible, () {
+              child: PasswordTextField(passwordVisible, () {
                 setState(() {
                   passwordVisible = !passwordVisible;
                 });

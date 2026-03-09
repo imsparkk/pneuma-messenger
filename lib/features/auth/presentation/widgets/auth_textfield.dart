@@ -7,6 +7,8 @@ class LoginTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       style: TextStyle(color: Colors.white),
+      cursorColor: Colors.white,
+      cursorOpacityAnimates: true,
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white.withAlpha(25),
@@ -14,7 +16,7 @@ class LoginTextField extends StatelessWidget {
         prefixIconConstraints: BoxConstraints(minWidth: 60),
         hintText: "Login",
         hintStyle: TextStyle(
-          color: Colors.white
+          color: Colors.white70
         ),
 
         border: OutlineInputBorder(
@@ -40,11 +42,15 @@ class LoginTextField extends StatelessWidget {
   }
 }
 
-TextField RegisterTextField(bool passwordVisible, VoidCallback onPressed) {
+TextField PasswordTextField(bool passwordVisible, VoidCallback onPressed) {
     return TextField(
                 style: TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+                cursorOpacityAnimates: true,
                 maxLength: 25,
                 obscureText: passwordVisible,
+                enableSuggestions: false,
+                autocorrect: false,
                 decoration: InputDecoration(
                   counterText: "",
                   filled: true,
@@ -56,7 +62,7 @@ TextField RegisterTextField(bool passwordVisible, VoidCallback onPressed) {
                     ),
                   prefixIconConstraints: BoxConstraints(minWidth: 60),
                   hintText: "Password",
-                  hintStyle: TextStyle(color: Colors.white),
+                  hintStyle: TextStyle(color: Colors.white70),
                   suffixIcon: IconButton(
                     padding: EdgeInsets.only(right: 10),
                     iconSize: 30,
