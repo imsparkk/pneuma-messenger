@@ -1,15 +1,59 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pneuma_messenger/features/auth/auth_service.dart';
 import 'package:pneuma_messenger/features/auth/presentation/widgets/auth_textfield.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _RegisterPageState();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 }
 
 class _RegisterPageState extends State<LoginPage> {
   bool passwordVisible = false;
+  String errorMessage = "";
+  bool isLoading = false;
+
+  void SignIn() async {
+    if (widget.emailController.text.isEmpty || widget.passwordController.text.isEmpty) {
+      setState(() {
+        errorMessage = "Заполните все поля";
+      });
+      return;
+    }
+    setState(() {
+      isLoading = true;
+      errorMessage = "";
+    });
+    try {
+      await authService.value.signInWithEmailAndPassword(
+        widget.emailController.text, widget.passwordController.text
+        );
+        Navigator.of(context).pushReplacementNamed('/');
+    } on FirebaseAuthException catch (e) {
+        if (mounted) {
+          setState(() {
+            errorMessage = e.message ?? "Произошла ошибка при входе!";
+          });
+        }
+        }
+    catch (e) {
+      if (mounted) {
+        setState(() {
+          errorMessage = "Неизвестная ошибка: $e";
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -30,8 +74,8 @@ class _RegisterPageState extends State<LoginPage> {
 
           Center(
             child: SizedBox(
-              width: 400, 
-              child: LoginTextField()
+              width: 350, 
+              child: EmailTextField(widget.emailController)
               )
           ),
 
@@ -39,34 +83,46 @@ class _RegisterPageState extends State<LoginPage> {
 
           Center(
             child: SizedBox(
-              width: 400,
+              width: 350,
               child: PasswordTextField(passwordVisible, () {
                 setState(() {
                   passwordVisible = !passwordVisible;
                 });
-              }),
+              }, widget.passwordController),
             ),
           ),
 
           SizedBox(height: 15),
 
           ElevatedButton(
-            child: Text(
-              "Sign in",
-              style: TextStyle(
-                backgroundColor: Colors.white,
-                color: Colors.black,
+            onPressed: isLoading ? null : () {
+              SignIn();
+            },
+            child: isLoading
+              ? CircularProgressIndicator(color: Colors.white)
+              : Text(
+                  "Sign in",
+                  style: TextStyle(
+                    color: Colors.black
+                  ),
+                ),
+          ),
+
+          if (errorMessage.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(
+                errorMessage,
+                style: TextStyle(color: Colors.red),
               ),
             ),
-            onPressed: () {},
-          ),
           TextButton(
             child: Text(
               "Нет учетной записи? Регистрируйся!",
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
-              Navigator.pushReplacementNamed(context, '/');
+              Navigator.pushReplacementNamed(context, '/register_page');
             },
           ),
         ],

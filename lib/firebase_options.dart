@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'pneuma-messenger.firebasestorage.app',
     measurementId: 'G-0P75KV19XC',
   );
+
 }

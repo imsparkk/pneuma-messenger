@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
-class LoginTextField extends StatelessWidget {
-  const LoginTextField({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
+TextField EmailTextField(TextEditingController? controller) {
+  return TextField(
+      controller: controller,
       style: TextStyle(color: Colors.white),
       cursorColor: Colors.white,
       cursorOpacityAnimates: true,
@@ -14,7 +11,7 @@ class LoginTextField extends StatelessWidget {
         fillColor: Colors.white.withAlpha(25),
         prefixIcon: Icon(Icons.person, color: Colors.white, size: 30),
         prefixIconConstraints: BoxConstraints(minWidth: 60),
-        hintText: "Login",
+        hintText: "Email",
         hintStyle: TextStyle(
           color: Colors.white70
         ),
@@ -39,11 +36,11 @@ class LoginTextField extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
-TextField PasswordTextField(bool passwordVisible, VoidCallback onPressed) {
+TextField PasswordTextField(bool passwordVisible, VoidCallback onPressed, TextEditingController? controller) {
     return TextField(
+                controller: controller,
                 style: TextStyle(color: Colors.white),
                 cursorColor: Colors.white,
                 cursorOpacityAnimates: true,
