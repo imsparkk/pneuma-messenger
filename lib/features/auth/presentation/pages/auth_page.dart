@@ -16,7 +16,7 @@ class AuthPage extends StatelessWidget {
                 "Welcome to Pneuma",
                 style: TextStyle(
                   color: Colors.white,
-                   fontSize: 50
+                   fontSize: 30
                    )
                 ),
             ),
