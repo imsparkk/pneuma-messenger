@@ -1,21 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pneuma_messenger/features/auth/auth_service.dart';
 import 'package:pneuma_messenger/features/home/drawer/drawer.dart';
 
-class ChatsPage extends StatefulWidget {
-  const ChatsPage({super.key});
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
 
   @override
-  State<ChatsPage> createState() => _ChatsPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _ChatsPageState extends State<ChatsPage> {
+class _SettingsPageState extends State<SettingsPage> {
   void logout() async {
     try {
       await authService.value.signOut();
       if (mounted) {
-        // clear stack and show auth layout
         Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
       }
     } on FirebaseException catch (e) {
@@ -31,11 +30,6 @@ class _ChatsPageState extends State<ChatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 18, 19, 22),
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 18, 19, 22),
-        title: Text("Pneuma", style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-      ),
       drawer: drawer(
         () {
           Navigator.popUntil(context, ModalRoute.withName('/'));
@@ -46,17 +40,17 @@ class _ChatsPageState extends State<ChatsPage> {
         },
         () {
           Navigator.pop(context);
-          Navigator.pushNamed(context, '/settings_page');
         },
         () {
           Navigator.pop(context);
           logout();
         },
       ),
-      body: Column(children: [
-        
-      ],
-    ),
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 18, 19, 22),
+        title: Text("Settings", style: TextStyle(color: Colors.white)),
+        centerTitle: true,
+      ),
     );
   }
 }

@@ -10,15 +10,16 @@ class RegisterPage extends StatefulWidget {
   State<RegisterPage> createState() => _RegisterPageState();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController passwordRepeatController = TextEditingController();
+  final TextEditingController passwordRepeatController =
+      TextEditingController();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
   bool passwordVisible = false;
   String errorMessage = "";
-  
+
   void register() async {
-    if (widget.emailController.text.isEmpty || 
+    if (widget.emailController.text.isEmpty ||
         widget.passwordController.text.isEmpty ||
         widget.passwordRepeatController.text.isEmpty) {
       setState(() {
@@ -27,7 +28,8 @@ class _RegisterPageState extends State<RegisterPage> {
       return;
     }
 
-    if (widget.passwordController.text != widget.passwordRepeatController.text) {
+    if (widget.passwordController.text !=
+        widget.passwordRepeatController.text) {
       setState(() {
         errorMessage = "Passwords don't match";
       });
@@ -39,12 +41,12 @@ class _RegisterPageState extends State<RegisterPage> {
         widget.emailController.text,
         widget.passwordController.text,
       );
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Пользователь успешно зарегистрирован!")),
         );
-        Navigator.pop(context);
+        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
       }
     } on FirebaseAuthException catch (e) {
       if (mounted) {
@@ -74,9 +76,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
           Center(
             child: SizedBox(
-              width: 350, 
+              width: 350,
               child: EmailTextField(widget.emailController),
-              )
+            ),
           ),
 
           SizedBox(height: 15),
@@ -104,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
               }, widget.passwordRepeatController),
             ),
           ),
-          
+
           SizedBox(height: 15),
 
           ElevatedButton(
@@ -119,14 +121,11 @@ class _RegisterPageState extends State<RegisterPage> {
               register();
             },
           ),
-          
+
           if (errorMessage.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Text(
-                errorMessage,
-                style: TextStyle(color: Colors.red),
-              ),
+              child: Text(errorMessage, style: TextStyle(color: Colors.red)),
             ),
 
           TextButton(
