@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pneuma_messenger/features/auth/auth_service.dart';
 import 'package:pneuma_messenger/features/home/drawer/drawer.dart';
+import 'package:pneuma_messenger/features/home/widgets/navigator_bar.dart';
 
 class ChatsPage extends StatefulWidget {
   const ChatsPage({super.key});
@@ -57,6 +58,7 @@ class _ChatsPageState extends State<ChatsPage> {
         
       ],
     ),
+      bottomNavigationBar: homeNavigatorBar(),
     );
   }
 }
