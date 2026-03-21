@@ -51,6 +51,18 @@ class _ProfilePageState extends State<ProfilePage> {
         title: Text("Profile", style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
+
+      body: Column(
+        children: [
+          SizedBox(height: 50),
+          Center(
+            child: CircleAvatar(backgroundColor: Colors.white, radius: 60),
+          ),
+          SizedBox(height: 25),
+          Text('John Doe', style: TextStyle(fontSize: 30, color: Colors.white)),
+          SizedBox(height: 15),
+        ],
+      ),
     );
   }
 }
