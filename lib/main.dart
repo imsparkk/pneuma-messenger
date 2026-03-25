@@ -5,6 +5,7 @@ import 'package:pneuma_messenger/features/auth/presentation/pages/register_page.
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pneuma_messenger/features/home/chats/presentation/pages/chats_page.dart';
 import 'package:pneuma_messenger/features/home/drawer/profile/pages/profile.dart';
+import 'package:pneuma_messenger/features/home/drawer/search/pages/search_page.dart';
 import 'package:pneuma_messenger/features/home/drawer/settings/pages/settings.dart';
 import 'package:pneuma_messenger/firebase_options.dart';
 
@@ -37,6 +38,7 @@ class App extends StatelessWidget {
         '/chats_page': (context) => ChatsPage(),
         '/profile_page': (context) => ProfilePage(),
         '/settings_page': (context) => SettingsPage(),
+        '/search_page': (context) => SearchPage(),
       },
     );
   }

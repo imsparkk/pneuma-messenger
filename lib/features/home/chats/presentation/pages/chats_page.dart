@@ -42,7 +42,7 @@ class _ChatsPageState extends State<ChatsPage> {
         },
         () {
           Navigator.pop(context);
-          Navigator.pushNamed(context, '/profile_page');
+          Navigator.pushNamed(context, '/search_page');
         },
         () {
           Navigator.pop(context);
@@ -50,8 +50,12 @@ class _ChatsPageState extends State<ChatsPage> {
         },
         () {
           Navigator.pop(context);
-          logout();
+          Navigator.pushNamed(context, '/profile_page');
         },
+        () {
+          Navigator.pop(context);
+          logout();
+        }
       ),
       body: Column(children: [
         

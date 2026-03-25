@@ -36,6 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
         },
         () {
           Navigator.pop(context);
+          Navigator.pushNamed(context, '/search_page');
         },
         () {
           Navigator.pop(context);
@@ -43,8 +44,12 @@ class _ProfilePageState extends State<ProfilePage> {
         },
         () {
           Navigator.pop(context);
-          logout();
+          Navigator.pushNamed(context, '/profile_page');
         },
+        () {
+          Navigator.pop(context);
+          logout();
+        }
       ),
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 18, 19, 22),

@@ -36,15 +36,20 @@ class _SettingsPageState extends State<SettingsPage> {
         },
         () {
           Navigator.pop(context);
+          Navigator.pushNamed(context, '/search_page');
+        },
+        () {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, '/settings_page');
+        },
+        () {
+          Navigator.pop(context);
           Navigator.pushNamed(context, '/profile_page');
         },
         () {
           Navigator.pop(context);
-        },
-        () {
-          Navigator.pop(context);
           logout();
-        },
+        }
       ),
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 18, 19, 22),
