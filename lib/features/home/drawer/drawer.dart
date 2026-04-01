@@ -20,11 +20,11 @@ Drawer drawer(
           onTap: onTap1,
         ),
         ListTile(
-          title: Text("Profile", style: TextStyle(color: Colors.white)),
+          title: Text("Settings", style: TextStyle(color: Colors.white)),
           onTap: onTap2,
         ),
         ListTile(
-          title: Text("Settings", style: TextStyle(color: Colors.white)),
+          title: Text("Profile", style: TextStyle(color: Colors.white)),
           onTap: onTap3,
         ),
         ListTile(
