@@ -4,10 +4,11 @@ import 'package:pneuma_messenger/features/auth/auth_service.dart';
 import 'package:pneuma_messenger/features/home/drawer/drawer.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  SearchPage({super.key});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
+  final TextEditingController searchController = TextEditingController();
 }
 
 class _SearchPageState extends State<SearchPage> {
@@ -57,6 +58,51 @@ class _SearchPageState extends State<SearchPage> {
         title: Text("Search", style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
+      body: Column(
+        children: [
+          SizedBox(height: 10),
+          Center(
+            child: SizedBox(
+              width: 350,
+              child: TextField(
+                controller: widget.searchController,
+                    style: TextStyle(color: Colors.white),
+                    cursorColor: Colors.white,
+                    cursorOpacityAnimates: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white.withAlpha(25),
+                      prefixIcon: Icon(Icons.search, color: Colors.white, size: 30),
+                      prefixIconConstraints: BoxConstraints(minWidth: 60),
+                      hintText: "Search",
+                      hintStyle: TextStyle(
+              color: Colors.white70
+                      ),
+              
+                      border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              borderSide: BorderSide(color: Colors.white, width: 1)
+                      ),
+              
+                      focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              borderSide: BorderSide(color: Colors.white, width: 1)
+                      ),
+              
+                      errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              borderSide: BorderSide(
+                width: 1,
+                color: Colors.red,
+                style: BorderStyle.solid,
+              ),
+                      ),
+                    ),
+                  ),
+            ),
+          ),
+        ]
+        ),
     );
   }
 }
