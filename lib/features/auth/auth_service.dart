@@ -13,6 +13,7 @@ class AuthService {
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
+    await _updateOnlineStatus(true);
   }
 
   Future<UserCredential> signUpWithEmailAndPassword(String email, String password) async {
@@ -30,6 +31,7 @@ class AuthService {
   }
 
   Future<void> signOut() async {
+    await _updateOnlineStatus(false);
     await _auth.signOut();
   }
 
@@ -42,14 +44,64 @@ class AuthService {
     if (user != null) {
       await user.updateDisplayName(displayName);
       await user.reload();
+      
+      await _updateUsernameInChats(displayName);
+    }
+  }
+
+  Future<void> _updateUsernameInChats(String displayName) async {
+    User? user = _auth.currentUser;
+    if (user == null) return;
+
+    try {
+      final chatsQuery = await FirebaseFirestore.instance
+          .collection('chats')
+          .where('participants', arrayContains: user.uid)
+          .get();
+
+      final batch = FirebaseFirestore.instance.batch();
+      for (final chatDoc in chatsQuery.docs) {
+        final chatData = chatDoc.data();
+        final participantNames = Map<String, dynamic>.from(chatData['participantNames'] ?? {});
+        participantNames[user.uid] = displayName;
+        
+        batch.update(chatDoc.reference, {'participantNames': participantNames});
+      }
+      
+      await batch.commit();
+    } catch (e) {
+      print('Error updating username in chats: $e');
     }
   }
 
   Future<void> deleteAccount() async {
     User? user = _auth.currentUser;
     if (user != null) {
+      await _updateOnlineStatus(false);
       await user.delete();
     }
+  }
+
+  Future<void> _updateOnlineStatus(bool isOnline) async {
+    User? user = _auth.currentUser;
+    if (user == null) return;
+
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+        'isOnline': isOnline,
+        'lastSeen': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      print('Error updating online status: $e');
+    }
+  }
+
+  Future<void> updateOnlineStatusOnAppStart() async {
+    await _updateOnlineStatus(true);
+  }
+
+  Future<void> updateOnlineStatusOnAppClose() async {
+    await _updateOnlineStatus(false);
   }
 
   Future<void> resetPasswordFromCurrentPassword(String currentPassword, String newPassword) async {
@@ -63,7 +115,4 @@ class AuthService {
       await user.updatePassword(newPassword);
     }
   }
-
-
-
 }

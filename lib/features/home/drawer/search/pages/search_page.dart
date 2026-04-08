@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pneuma_messenger/features/auth/auth_service.dart';
+import 'package:pneuma_messenger/features/home/chats/services/chat_service.dart';
 import 'package:pneuma_messenger/features/home/drawer/drawer.dart';
 import '../services/search_service.dart';
 
@@ -14,6 +15,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _controller = TextEditingController();
   final SearchService _searchService = SearchService();
+  final ChatService _chatService = ChatService();
   List<Map<String, dynamic>> _searchResults = [];
   bool _isSearching = false;
 
@@ -32,7 +34,7 @@ class _SearchPageState extends State<SearchPage> {
     } on FirebaseException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message ?? 'Произошла ошибка при выходе!')),
+          SnackBar(content: Text(e.message ?? "Произошла ошибка при выходе!")),
         );
       }
     }
@@ -40,9 +42,11 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> _performSearch(String query) async {
     final trimmedQuery = query.trim();
+    
     if (trimmedQuery.isEmpty) {
       setState(() {
         _searchResults = [];
+        _isSearching = false;
       });
       return;
     }
@@ -51,19 +55,72 @@ class _SearchPageState extends State<SearchPage> {
       _isSearching = true;
     });
 
-    final results = await _searchService.searchUsers(trimmedQuery);
-    if (!mounted) return;
+    try {
+      final results = await _searchService.searchUsers(trimmedQuery);
+      if (!mounted) return;
 
-    setState(() {
-      _searchResults = results;
-      _isSearching = false;
-    });
+      setState(() {
+        _searchResults = results;
+        _isSearching = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isSearching = false;
+        _searchResults = [];
+      });
+    }
+  }
+
+  Future<void> _createChatAndNavigate(Map<String, dynamic> user) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Пользователь не авторизован')),
+      );
+      return;
+    }
+
+    if (user['uid'] == currentUser.uid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Нельзя создать чат с самим собой')),
+      );
+      return;
+    }
+
+    try {
+      final chatId = await _chatService.createChat(
+        user['uid'],
+        user['name'] ?? 'Unknown User',
+      );
+
+      if (chatId != null) {
+        Navigator.pushNamed(
+          context,
+          '/chat_page',
+          arguments: {
+            'chatId': chatId,
+            'otherUserName': user['name'] ?? 'Unknown User',
+            'otherUserId': user['uid'],
+          },
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Ошибка создания чата')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Ошибка создания чата: $e')),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 18, 19, 22),
+      backgroundColor: Color.fromARGB(255, 18, 19, 22),
       drawer: drawer(
         () {
           Navigator.popUntil(context, ModalRoute.withName('/'));
@@ -83,11 +140,11 @@ class _SearchPageState extends State<SearchPage> {
         () {
           Navigator.pop(context);
           logout();
-        },
+        }
       ),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 18, 19, 22),
-        title: const Text('Search', style: TextStyle(color: Colors.white)),
+        backgroundColor: Color.fromARGB(255, 18, 19, 22),
+        title: Text("Поиск", style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
       body: Column(
@@ -107,7 +164,7 @@ class _SearchPageState extends State<SearchPage> {
                   fillColor: Colors.white.withAlpha(25),
                   prefixIcon: const Icon(Icons.search, color: Colors.white, size: 30),
                   prefixIconConstraints: const BoxConstraints(minWidth: 60),
-                  hintText: 'Search',
+                  hintText: 'Введите имя для поиска',
                   hintStyle: const TextStyle(color: Colors.white70),
                   border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -131,11 +188,13 @@ class _SearchPageState extends State<SearchPage> {
           ),
           Expanded(
             child: _isSearching
-                ? const Center(child: CircularProgressIndicator(color: Colors.white))
+                ? const Center(
+                    child: CircularProgressIndicator(color: Colors.white),
+                  )
                 : _searchResults.isEmpty
                     ? Center(
                         child: Text(
-                          _controller.text.trim().isEmpty
+                          _controller.text.isEmpty
                               ? 'Введите имя для поиска'
                               : 'Ничего не найдено',
                           style: const TextStyle(color: Colors.white70),
@@ -145,14 +204,32 @@ class _SearchPageState extends State<SearchPage> {
                         itemCount: _searchResults.length,
                         itemBuilder: (context, index) {
                           final user = _searchResults[index];
+                          final userName = user['name']?.toString() ?? 'Без имени';
+                          final firstLetter = userName.isNotEmpty ? userName[0].toUpperCase() : '?';
+                          
                           return ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.blue,
+                              child: Text(
+                                firstLetter,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                             title: Text(
-                              user['name']?.toString() ?? 'Без имени',
+                              userName,
                               style: const TextStyle(color: Colors.white),
                             ),
                             subtitle: Text(
                               user['email']?.toString() ?? '',
                               style: const TextStyle(color: Colors.white70),
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.chat, color: Colors.blue),
+                              onPressed: () => _createChatAndNavigate(user),
+                              tooltip: 'Начать чат',
                             ),
                           );
                         },

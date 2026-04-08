@@ -1,7 +1,8 @@
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
-    id("com.google.gms.google-services")
+    // Google Services plugin removed to allow APK build without local google-services.json.
+    // If you use Firebase on Android, add android/app/google-services.json and re-enable this plugin.
     // END: FlutterFire Configuration
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.

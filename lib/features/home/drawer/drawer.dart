@@ -12,23 +12,23 @@ Drawer drawer(
     child: ListView(
       children: [
         ListTile(
-          title: Text("Home", style: TextStyle(color: Colors.white)),
+          title: Text("Чаты", style: TextStyle(color: Colors.white)),
           onTap: onTapHome,
         ),
         ListTile(
-          title: Text("Search", style: TextStyle(color: Colors.white)),
+          title: Text("Поиск", style: TextStyle(color: Colors.white)),
           onTap: onTap1,
         ),
         ListTile(
-          title: Text("Settings", style: TextStyle(color: Colors.white)),
+          title: Text("Настройки", style: TextStyle(color: Colors.white)),
           onTap: onTap2,
         ),
         ListTile(
-          title: Text("Profile", style: TextStyle(color: Colors.white)),
+          title: Text("Профиль", style: TextStyle(color: Colors.white)),
           onTap: onTap3,
         ),
         ListTile(
-          title: Text("Logout", style: TextStyle(color: Colors.red)),
+          title: Text("Выход", style: TextStyle(color: Colors.red)),
           onTap: onTap4,
         ),
       ],

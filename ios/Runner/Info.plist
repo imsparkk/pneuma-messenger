@@ -66,5 +66,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Для отправки фото и видео в чате</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Для выбора фото и видео из галереи</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Для записи видео с звуком</string>
 </dict>
 </plist>

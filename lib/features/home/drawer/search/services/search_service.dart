@@ -9,12 +9,24 @@ class SearchService {
       return [];
     }
 
-    final snapshot = await _firestore
-        .collection('users')
-        .where('name', isGreaterThanOrEqualTo: trimmedQuery)
-        .where('name', isLessThanOrEqualTo: '\$trimmedQuery\uf8ff')
-        .get();
+    try {
+      final snapshot = await _firestore
+          .collection('users')
+          .where('name', isGreaterThanOrEqualTo: trimmedQuery)
+          .where('name', isLessThanOrEqualTo: '$trimmedQuery\uf8ff')
+          .get();
 
-    return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      return snapshot.docs
+          .map((doc) => {
+                ...doc.data(),
+                'uid': doc.id,
+              })
+          .toList();
+    } catch (e) {
+      return [];
+    }
   }
+
+  
+
 }

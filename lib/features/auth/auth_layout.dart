@@ -20,8 +20,10 @@ class AuthLayout extends StatelessWidget{
         if (snapshot.connectionState == ConnectionState.active) {
           final user = snapshot.data;
           if (user == null) {
+            authService.value.updateOnlineStatusOnAppClose();
             return pageIfNotConnected ?? AuthPage();
           } else {
+            authService.value.updateOnlineStatusOnAppStart();
             return ChatsPage();
           }
         } else {
